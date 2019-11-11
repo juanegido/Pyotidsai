@@ -1,4 +1,8 @@
 import subprocess
+from PIL import Image
+import io
+from scapy.all import *
+from scapy.contrib import mqtt
 
 
 # Usage: SplitCap [OPTIONS]...
@@ -45,4 +49,10 @@ def execute(args):
 
 
 if __name__ == '__main__':
-    split_by_session('IoT_Keylogging__00003_20180619141524.pcap')
+    # split_by_session('IoT_Keylogging__00003_20180619141524.pcap')
+    # split_by_host('IoT_Keylogging__00003_20180619141524.pcap')
+
+    sniff(offline="test.pcap", lfilter=lambda x: "TCP" in x, prn=lambda x:
+    print("Alerta!!" + x.summary()) if (x["IP"].src == "192.168.100.3" and (x["IP"].dst != "192.168.1.1")) else None)
+
+    #Mirar Snort
