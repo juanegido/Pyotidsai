@@ -1,8 +1,11 @@
 import subprocess
-from PIL import Image
+#from PIL import Image
 import io
 from scapy.all import *
 from scapy.contrib import mqtt
+import pyfiglet
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # Usage: SplitCap [OPTIONS]...
@@ -55,4 +58,34 @@ if __name__ == '__main__':
     sniff(offline="test.pcap", lfilter=lambda x: "TCP" in x, prn=lambda x:
     print("Alerta!!" + x.summary()) if (x["IP"].src == "192.168.100.3" and (x["IP"].dst != "192.168.1.1")) else None)
 
+    ########################## HELLO #############################
+    ascii_banner = pyfiglet.figlet_format("Pyotidsai!!")
+    print(ascii_banner)
+    ######################### Options ############################
+    print('Introduce la opción deseada '
+          '\n(1) Capturar paquetes'
+          '\n(2) Seleccionar pcap'
+          '\n(3) Detectar malware(SNORT)')
+    opt=input()
+    if(opt=='2'):
+        print('introduce pcap a analizar:')
+        sniff(offline=input(), lfilter=lambda x: "TCP" in x, prn=lambda x:print("Alerta!!" + x.summary()) if (x["IP"].src == "192.168.100.3" and (x["IP"].dst != "192.168.1.1")) else None)
+    if(opt=='3'):
+        print('Holi')
     #Mirar Snort
+
+    ####################### pcap->binary->image ###################
+    try:
+        f = open('binaryPcap', 'r')
+        fnew = open('binaryNewPcap', 'w')
+        for line in f.readlines():
+            if (line.__contains__('   ')):
+                fnew.write(line)
+        data_set = np.loadtxt('binaryNewPcap.txt')
+        data_array = np.vstack(data_set)
+        plt.imshow(data_array, cmap='Greys', interpolation='nearest')
+        plt.show()
+        plt.close()
+
+    except Exception as e:
+        print(e)
