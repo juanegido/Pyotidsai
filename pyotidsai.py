@@ -77,14 +77,14 @@ if __name__ == '__main__':
 
     ####################### pcap->binary->image ###################
     try:
-        #Borrar primera columna de pcap
+        #delete first colum binaryPcap
         l=''
         f = open('binaryPcap', 'r')
         fnew = open('binaryNewPcap.txt', 'w')
         for line in f.readlines():
             line = line[10:71]
             fnew.writelines(line+'\n')
-        #Pintar
+        #Draw
         data_set = np.loadtxt('binaryNewPcap.txt')
         data_array = np.vstack(data_set)
         plt.imshow(data_array, cmap='Greys', interpolation='nearest')
