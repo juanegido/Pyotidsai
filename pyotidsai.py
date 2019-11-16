@@ -66,21 +66,25 @@ if __name__ == '__main__':
           '\n(1) Capturar paquetes'
           '\n(2) Seleccionar pcap'
           '\n(3) Detectar malware(SNORT)')
-    opt=input()
-    if(opt=='2'):
+    opt = input()
+    if (opt == '2'):
         print('introduce pcap a analizar:')
-        sniff(offline=input(), lfilter=lambda x: "TCP" in x, prn=lambda x:print("Alerta!!" + x.summary()) if (x["IP"].src == "192.168.100.3" and (x["IP"].dst != "192.168.1.1")) else None)
-    if(opt=='3'):
+        sniff(offline=input(), lfilter=lambda x: "TCP" in x, prn=lambda x: print("Alerta!!" + x.summary()) if (
+                x["IP"].src == "192.168.100.3" and (x["IP"].dst != "192.168.1.1")) else None)
+    if (opt == '3'):
         print('Holi')
-    #Mirar Snort
+    # Mirar Snort
 
     ####################### pcap->binary->image ###################
     try:
+        #Borrar primera columna de pcap
+        l=''
         f = open('binaryPcap', 'r')
-        fnew = open('binaryNewPcap', 'w')
+        fnew = open('binaryNewPcap.txt', 'w')
         for line in f.readlines():
-            if (line.__contains__('   ')):
-                fnew.write(line)
+            line = line[10:71]
+            fnew.writelines(line+'\n')
+        #Pintar
         data_set = np.loadtxt('binaryNewPcap.txt')
         data_array = np.vstack(data_set)
         plt.imshow(data_array, cmap='Greys', interpolation='nearest')
